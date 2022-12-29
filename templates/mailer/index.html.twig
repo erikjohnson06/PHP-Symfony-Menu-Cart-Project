@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu Cart | Message{% endblock %}
+
+{% block body %}
+
+    {% for message in app.flashes('message') %}
+        <div class="alert alert-success"><h3>{{ message }}</h3></div>
+            {% endfor %}
+
+    <section class="contact-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 p-0">
+                    <!-- Map -->
+                    <div class="map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3229.4038872878073!2d-83.92581908491849!3d35.961549922154965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x885c17dc9374fd57%3A0xe9ef15f1e456c93a!2sSunsphere%2C%20Knoxville%2C%20TN%2037902!5e0!3m2!1sen!2sus!4v1672171880670!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+                <div class="col-lg-6 p-0">
+                    <div class="contact-warp">
+                        <div class="section-title mb-0">
+                            <h2>Contact Us</h2>
+                        </div>
+                        <p>Special instructions regarding your order? Let us know here!</p>
+
+                        {{ form(emailForm) }}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{# Twig - Inline  CSS bundle #}
+
+{% apply inline_css %}
+
+<style>
+    h3 {
+        color: #12b33d;
+    }
+</style>
+<h3>
+    The following message was sent from {{ table }}
+</h3>
+
+<p>
+    {{ text }}
+</p>
+
+{% endapply %}

@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu Cart | Orders{% endblock %}
+
+{% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success"><h3>{{ message }} </h3></div>
+    {% endfor %}
+
+    {% for err in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">{{ err }}</div>
+    {% endfor %}
+
+    {% set total = 0 %}
+
+    <br />
+    <div class="container">
+        <h2>Orders</h2>
+        <br />
+
+        <table class="table table-striped">
+
+            <thead>
+                <tr>
+                    <th>Order No.</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for order in orders %}
+
+                    {# Only display open/ready orders #}
+                    {%  if order.status == "Open" or order.status == "Ready" %}
+
+                        {% set total = total + order.price %}
+
+                        <tr>
+                            <td>{{ order.orderId }}</td>
+                            <td>{{ order.name }}</td>
+                            <td>${{ order.price }}</td>
+                            <td>
+                                {%  if is_granted("IS_AUTHENTICATED_FULLY") %}
+
+                                    <div class="dropdown">
+                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ order.status }}
+                                        </a>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{{ path('app_status', {id: order.orderId, status: 'Open'}) }}">Open</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_status', {id: order.orderId, status: 'Ready'}) }}">Ready</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_status', {id: order.orderId, status: 'Canceled'}) }}">Cancel</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_status', {id: order.orderId, status: 'Archived'}) }}">Archive</a></li>
+                                        </ul>
+                                    </div>
+
+                                {% endif %}
+
+                                {%  if not is_granted("IS_AUTHENTICATED_FULLY") %}
+                                    {{ order.status }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {%  if order.status == "Open" %}
+                                    <a
+                                        title="Delete this Order"
+                                        class="btn btn-outline-danger btn-sm"
+                                        href="{{ path('app_delete_order', {id: order.orderId}) }}"
+                                        role="button">
+                                        Delete
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>${{ total }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
